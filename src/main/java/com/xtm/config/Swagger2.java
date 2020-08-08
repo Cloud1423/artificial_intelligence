@@ -44,7 +44,5 @@ public class Swagger2 {
                 // 定义版本号
                 .version("1.0").build();
 
-        //test
-
     }
 }
