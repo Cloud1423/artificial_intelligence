@@ -1,0 +1,24 @@
+spring:
+  jackson:
+    time-zone: "GMT+8"
+    date-format: "yyyy-MM-dd HH:mm:ss"
+  datasource:
+    #url: jdbc:mysql://47.102.153.115:3306/artificial_intelligence?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://localhost:3306/artificial_intelligence?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username : root
+    password : root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # 每次运行程序，没有表会新建表，但是表内有数据不会被清空，只会更新表结构。
+    show-sql: true #控制台显示sql
+logging:
+  file: log/log.log
+  level:
+    org:
+      springframework:
+        security: DEBUG
+    hibernate: DEBUG
+  #  pattern:
+  #    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+  #    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'

@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ai">
+    <output-path>$PROJECT_DIR$/out/artifacts/ai</output-path>
+    <root id="archive" name="ai.war" />
+  </artifact>
+</component>
