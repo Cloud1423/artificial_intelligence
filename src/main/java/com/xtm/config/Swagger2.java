@@ -43,5 +43,8 @@ public class Swagger2 {
                 .description("欢迎访问用户中心接口文档，这里是描述信息")
                 // 定义版本号
                 .version("1.0").build();
+
+
+
     }
 }
