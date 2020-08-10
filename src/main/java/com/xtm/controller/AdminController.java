@@ -82,7 +82,9 @@ public class AdminController {
         adminService.updateAdmin(oldAdmin, admin);
         return "success";
     }
-
+/*
+* 提交测试
+* */
     @ResponseBody
     @PostMapping("/admin/upload_head")
     public Object uploadImg(@RequestParam("file") MultipartFile uploadFile, HttpServletRequest request) throws IOException {
