@@ -18,7 +18,7 @@ import java.util.List;
  * @date:2019/6/18 17:18
  */
 @Repository
-public interface ArticleRepository extends JpaRepository<Article, Integer> {
+public interface  ArticleRepository extends JpaRepository<Article, Integer> {
 
     List<Article> findAll();
 
@@ -41,7 +41,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     void updateArticle(Article article);
 
     @Modifying
-    @Query(value = "update article set author=:#{#admin.adminName}  where author=:#{#oldAdmin.adminName}", nativeQuery = true)
+    @Query(value = "update article set author_id=:#{#admin.id}  where author_id=:#{#oldAdmin.id}", nativeQuery = true)
     void updateAuthor(Admin oldAdmin, Admin admin);
 
     /*@Modifying

@@ -20,10 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * @author:藏剑
- * @date:2019/6/18 10:26
- */
+/*
+ * 管理员控制器
+ * */
 @Controller
 @Slf4j
 public class AdminController {
@@ -31,36 +30,40 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    /*
+     * 管理员登录逻辑
+     * */
     @RequestMapping("/admin/login")
     public String login(String account, String password, HttpServletRequest httpServletRequest, Map<String, Object> map) {
         Admin admin = adminService.getAdmin(account, password);
         HttpSession session = httpServletRequest.getSession();
         String rightCode = (String) session.getAttribute("rightCode");
         String tryCode = httpServletRequest.getParameter("tryCode");
-//        if (admin != null && rightCode.equals(tryCode)) {
-//            session.setAttribute("admin", admin);          //用户信息保存到session
-//            //获取头像
-//            String headUrl = admin.getHeadUrl();
-//            session.setAttribute("headUrl", headUrl);
-//            return "redirect:/dashboard.html";
-//        } else if (!rightCode.equals(tryCode)) {
-//            map.put("msg", "验证码错误");
-//            return "login";
-//        } else {
-//            map.put("msg", "用户名或密码错误");
-//            return "login";
-//        }
-        if (admin != null) {
+        if (admin != null && rightCode.equals(tryCode)) {
             session.setAttribute("admin", admin);          //用户信息保存到session
             //获取头像
             String headUrl = admin.getHeadUrl();
             session.setAttribute("headUrl", headUrl);
             return "redirect:/dashboard.html";
+        } else if (!rightCode.equals(tryCode)) {
+            map.put("msg", "验证码错误");
+            return "login";
         } else {
             map.put("msg", "用户名或密码错误");
             return "login";
         }
     }
+//        if (admin != null) {
+//            session.setAttribute("admin", admin);          //用户信息保存到session
+//            //获取头像
+//            String headUrl = admin.getHeadUrl();
+//            session.setAttribute("headUrl", headUrl);
+//            return "redirect:/dashboard.html";
+//        } else {
+//            map.put("msg", "用户名或密码错误");
+//            return "login";
+//        }
+
 
     @RequestMapping("/admin/exit")
     public String exit(HttpSession session) {
@@ -89,7 +92,7 @@ public class AdminController {
         final String baseUrl = "asserts/images/";
         String headUrl = "";
         if (!uploadFile.isEmpty()) {
-            log.info("uploadFileName:"+uploadFile.getName());
+            log.info("uploadFileName:" + uploadFile.getName());
             //头像保存路径
             String filepath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static/" + baseUrl;
             File file = new File(filepath);
@@ -110,7 +113,7 @@ public class AdminController {
             {
                 //覆盖url
                 admin.setHeadUrl(headUrl);
-                admin.setHeadUrl(filepath+fileName);
+                //admin.setHeadUrl(filepath + fileName);
                 //替换头像session
                 session.setAttribute("headUrl", headUrl);
             }

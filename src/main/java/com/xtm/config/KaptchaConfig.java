@@ -19,6 +19,10 @@ import java.util.Properties;
 @component （把普通pojo实例化到spring容器中，相当于配置文件中的）
 * */
 
+
+/*
+* 此类用于产生验证码
+* */
 @Component
 public class KaptchaConfig {
     @Bean

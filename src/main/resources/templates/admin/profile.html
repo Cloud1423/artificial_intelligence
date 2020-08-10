@@ -10,9 +10,10 @@
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div th:replace="commons/bar::topbar"></div>
 
-    <div th:replace="commons/bar::sidebar(activeUri='profile.html')"></div>
+    <div th:replace="commons/bar::topbar"></div><!--顶部导航栏-->
+
+    <div th:replace="commons/bar::sidebar(activeUri='profile.html')"></div><!--侧边导航栏-->
 
     <div class="layui-body " style="margin-right: 30px">
         <div style="padding:50px;">

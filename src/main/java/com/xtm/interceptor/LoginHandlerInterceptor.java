@@ -6,8 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author:藏剑
- * @date:2019/4/13 21:17
+ * 处理登陆的拦截器
  */
 public class LoginHandlerInterceptor implements HandlerInterceptor {
     @Override

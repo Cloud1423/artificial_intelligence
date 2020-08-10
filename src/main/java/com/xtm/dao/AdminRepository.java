@@ -12,6 +12,7 @@ import java.util.List;
  * @author:藏剑
  * @date:2019/6/18 14:02
  */
+//@Repository、@Service、@Controller 和 @Component 将类标识为Bean
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
@@ -26,7 +27,7 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
     /*设置管理员密码*/
     @Modifying
-    @Query(value = "update admin set  password=:#{#admin.password},admin_name=:#{#admin.adminName},profile=:#{#admin.profile} where id=:#{#admin.id}", nativeQuery = true)
+    @Query(value = "update admin set  password=:#{#admin.password},admin_name=:#{#admin.adminName},profile=:#{#admin.profile} where admin_id=:#{#admin.id}", nativeQuery = true)
     void updateAdmin(Admin admin);
 
 }
