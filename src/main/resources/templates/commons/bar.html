@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -98,18 +99,24 @@
 
                     </dl>
                 </li>
+
+
                 <li class="layui-nav-item"
                     th:class="${activeUri=='carousel.html'?'layui-nav-item layui-this':'layui-nav-item'}">
                     <a href="#" th:href="@{/carousel.html}">
                         <i class="layui-icon layui-icon-carousel"></i>轮播组图
                     </a>
                 </li>
+
+
                 <li class="layui-nav-item"
                     th:class="${activeUri=='profile.html'?'layui-nav-item layui-this':'layui-nav-item'}">
                     <a href="#" th:href="@{/profile.html}">
                         <i class="layui-icon layui-icon-friends"></i>个人管理
                     </a>
                 </li>
+
+
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;"><i class="layui-icon layui-icon-dialogue"></i>消息</a>
                     <dl class="layui-nav-child">

@@ -30,7 +30,7 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
     @Query(value = " select ne.id,ad.adminName,ne.content,ne.createTime,ne.title,ad.account,ne.click from News ne,Admin ad  where ad.id=ne.authorId")
     List<Object> findAllNewss();
 
-    @Query(value = "select * from news at where ne.news_id=?1", nativeQuery = true)
+    @Query(value = "select * from news at where news_id=?1", nativeQuery = true)
     List<News> findNewsById(Integer id);
 
     @Modifying

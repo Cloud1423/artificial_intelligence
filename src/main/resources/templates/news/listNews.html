@@ -35,8 +35,10 @@
 
                         <script type="text/html" id="toolbarTop">
                             <div class="layui-btn-container demoTable">
-                                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delnewss"><i
-                                        class="layui-icon layui-icon-delete"></i>批量删除
+                                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delnewss">
+                                    <!-- i标签:设置按钮小图标 -->
+                                    <i class="layui-icon layui-icon-delete"></i>
+                                    批量删除
                                 </button>
                             </div>
 
@@ -73,21 +75,21 @@
         });
 
         var tableIns = table.render({
-            elem: '#newsTable'
-            , url: '/ai/news'
-            , page: true
-            , toolbar: true
-            , loading: true
-            , limit: 5
-            , id: 'newsTable'
+            elem: '#newsTable'//指定原始表格元素选择器（推荐id选择器）
+            , url: '/ai/news'//异步数据接口相关参数。其中 url 参数为必填项
+            , page: true//开启分页
+            , toolbar: true//仅开启工具栏，不显示左侧模板
+            , loading: true//是否显示加载条,如果设置 false，则在切换分页时，不会出现加载条。该参数只适用于 url 参数开启的方式
+            , limit: 5//每页显示的条数（默认：10）
+            , id: 'newsTable'//设定容器唯一 id
             , text: {
-                none: '暂无内容'
+                none: '暂无内容'////默认：无数据。
             }
             , height: window.innerHeight * 0.75
             , width: window.innerWidth * 0.75
-            , limits: [5, 10, 20, 50]
+            , limits: [5, 10, 20, 50]//每页条数的选择项
             , title: '历史新闻'
-            , toolbar: '#toolbarTop'
+            , toolbar: '#toolbarTop'//指向自定义工具栏模板选择器
             , initSort: {
                 field: 'createTime' //排序字段，对应 cols 设定的各字段名
                 , type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序

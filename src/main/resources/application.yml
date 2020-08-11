@@ -4,9 +4,10 @@ spring:
     date-format: "yyyy-MM-dd HH:mm:ss"
   datasource:
     #url: jdbc:mysql://47.102.153.115:3306/artificial_intelligence?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
-    url: jdbc:mysql://localhost:3306/artificial_intelligence?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    #url: jdbc:mysql://localhost:3306/artificial_intelligence?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://112.124.18.177:3306/artificial_intelligence?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
     username : root
-    password : root
+    password : Password123
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

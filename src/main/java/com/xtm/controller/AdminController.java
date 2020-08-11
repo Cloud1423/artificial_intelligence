@@ -114,8 +114,8 @@ public class AdminController {
             if (admin != null)//若已有头像
             {
                 //覆盖url
-                admin.setHeadUrl(headUrl);
-                //admin.setHeadUrl(filepath + fileName);
+                admin.setHeadUrl(headUrl);//相对路径
+                //admin.setHeadUrl(filepath + fileName);//本地绝对路径
                 //替换头像session
                 session.setAttribute("headUrl", headUrl);
             }
