@@ -92,11 +92,15 @@
                                 <div class="form-style-w3ls">
                                     <div class="alert alert-danger" role="alert" th:text="${msg}"
                                          th:if="${not #strings.isEmpty(msg)}"></div>
-                                    <input placeholder="账号" name="account" type="text" required="">
-                                    <input placeholder="密码" name="password" type="password" required="">
-                                    <input id="code" placeholder="验证码" name="tryCode" type="text" required="" autocomplete='off'>
-                                    <img alt="验证码" onclick="this.src='/ai/defaultKaptcha?d='+new Date()*1"
-                                         th:src="@{/defaultKaptcha}"/>
+                                    <!--<input placeholder="账号" name="account" type="text" required="">-->
+                                    <!--<input placeholder="密码" name="password" type="password" required="">-->
+                                    <!--<input id="code" placeholder="验证码" name="tryCode" type="text" required="" autocomplete='off'>-->
+
+                                    <input placeholder="账号" name="account" type="text">
+                                    <input placeholder="密码" name="password" type="password">
+                                    <input id="code" placeholder="验证码" name="tryCode" type="text" autocomplete='off'>
+
+                                    <img alt="验证码" onclick="this.src='/ai/defaultKaptcha?d='+new Date()*1" th:src="@{/defaultKaptcha}"/>
                                     <button class="btn" type="submit" style="margin-bottom: 10px;"> 登录</button>
 
                                     <span> 我已阅读并同意关于个人博客管理系统相关规定 <br><a href="#myModal">《个人博客管理系统相关规定》</a></span>

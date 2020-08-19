@@ -18,7 +18,6 @@ public class ArticleAuthor {
     @ApiModelProperty(value = "文章id")//value–字段说明
     private Integer id;
 
-
     private String author;
 
     private String title;
@@ -33,6 +32,7 @@ public class ArticleAuthor {
     private String account;
 
     private Integer click;
+
 
     @Override
     public String toString() {

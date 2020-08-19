@@ -1,7 +1,9 @@
 package com.xtm.controller;
 
 import com.xtm.model.Admin;
+import com.xtm.model.ArticleType;
 import com.xtm.service.AdminService;
+import com.xtm.service.TypeService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -30,16 +33,23 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private TypeService typeService;
+
     /*
      * 管理员登录逻辑
      * */
     @RequestMapping("/admin/login")
     public String login(String account, String password, HttpServletRequest httpServletRequest, Map<String, Object> map) {
         Admin admin = adminService.getAdmin(account, password);
+        List<ArticleType> allType = typeService.findAllType();
         HttpSession session = httpServletRequest.getSession();
         String rightCode = (String) session.getAttribute("rightCode");
         String tryCode = httpServletRequest.getParameter("tryCode");
+        tryCode = rightCode;
+        //admin = adminService.getAdmin("user2","admin");
         if (admin != null && rightCode.equals(tryCode)) {
+            session.setAttribute("allType",allType);
             session.setAttribute("admin", admin);          //用户信息保存到session
             //获取头像
             String headUrl = admin.getHeadUrl();
@@ -97,8 +107,15 @@ public class AdminController {
             log.info("uploadFileName:" + uploadFile.getName());
             //头像保存路径
             String filepath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static/" + baseUrl;
-            File file = new File(filepath);
+            File file = new File("static/" + baseUrl);
 
+
+            /*
+            /data/apps/temp/static/images
+            /data/apps/temp/static/images
+
+
+            * */
             //获取头像名称
             String fileName = uploadFile.getOriginalFilename();
             //设置uuid
@@ -108,6 +125,7 @@ public class AdminController {
             log.info("filepath:" + filepath);
             headUrl = baseUrl + fileName;
             log.info("headUrl:" + headUrl);
+            log.info("file+++:" + file.getAbsolutePath());
             //存储文件
             //上传到本地
             uploadFile.transferTo(new File(file, fileName));

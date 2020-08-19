@@ -27,14 +27,17 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
     @Query(value = " select ne.id,ad.adminName,ne.content,ne.createTime,ne.title,ad.account,ne.click from News ne,Admin ad  where  ne.authorId=?1 and ad.id=ne.authorId")
     List<Object> findAllNewssByAuthorId(Integer authorId);
 
-    @Query(value = " select ne.id,ad.adminName,ne.content,ne.createTime,ne.title,ad.account,ne.click from News ne,Admin ad  where ad.id=ne.authorId")
+    /*
+    * 多表查询
+    * */
+    @Query(value = " select ne.id,ad.adminName,ne.content,ne.createTime,ne.title,ad.account,ne.click,ne.type,ad.id from News ne,Admin ad  where ad.id=ne.authorId")
     List<Object> findAllNewss();
 
-    @Query(value = "select * from news at where news_id=?1", nativeQuery = true)
+    @Query(value = "select * from news  where news_id=?1", nativeQuery = true)
     List<News> findNewsById(Integer id);
 
     @Modifying
-    @Query(value = "update news set title=:#{#news.title},content=:#{#news.content}  where id=:#{#news.id}", nativeQuery = true)
+    @Query(value = "update news set title=:#{#news.title},content=:#{#news.content},type=:#{#news.type} where id=:#{#news.id}", nativeQuery = true)
     void updateNews(News news);
 
     @Modifying
@@ -66,8 +69,10 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
     @Query(value = "select ad.adminName,sum(ne.click) as clickSum from News ne,Admin ad where ne.authorId=ad.id  group by ne.authorId order by clickSum desc ")
     List<Object> getAndSortClick();
 
-    @Query(value = " select ne.id,ad.adminName,ne.content,ne.createTime,ne.title,ad.account,ne.click from News ne,Admin ad  where  ne.id=?1 and ad.id=ne.authorId")
+    @Query(value = " select ne.id,ad.adminName,ne.content,ne.createTime,ne.title,ad.account,ne.click,ne.type,ad.id from News ne,Admin ad  where  ne.id=?1 and ad.id=ne.authorId")
     List<Object> findNewsAuthorById(Integer id);
+
+
 
     @Modifying
     @Query(value = "update News ne set ne.click=ne.click+1 where ne.id=?1")

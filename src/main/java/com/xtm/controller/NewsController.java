@@ -1,7 +1,11 @@
 package com.xtm.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xtm.model.*;
+import com.xtm.service.CommentsService;
 import com.xtm.service.NewsService;
+import com.xtm.service.TypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +31,11 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
 
+    @Autowired
+    private TypeService typeService;
+
+
+
     @PostMapping("/news")
     public String saveNews(News news) {
         news.setCreateTime(new Date());
@@ -44,19 +53,29 @@ public class NewsController {
     }
 
 
+    /*
+    * 点击修改按钮会调用这个函数
+    * */
     @GetMapping("/news/{id}")
     public String newsUpdate(@PathVariable("id") Integer id, Model model) {
         News news = newsService.getNewsById(id);
+        System.out.println("--------------------------------");
         log.info(news.toString());
+        System.out.println("--------------------------------");
+        List<ArticleType> allType = typeService.findAllType();
         model.addAttribute("news", news);
+        model.addAttribute("allType",allType);
         return "news/modifyNews";
     }
+
+
 
     @ApiOperation(value = "获取所有新闻")
     @ResponseBody
     @GetMapping("/front/news")
-    public List<NewsAuthor> getArticles() {
+      public List<NewsAuthor> getArticles(Model model,@RequestParam(defaultValue = "1",value = "pageNum") Integer pageNum) {
         List<Object> articles = newsService.getAllNewss();
+        PageInfo<Object> pageInfo = new PageInfo<Object>(articles);
         List<NewsAuthor> views = new ArrayList<NewsAuthor>();
         for (Object o : articles) {
             Object[] rowArray = (Object[]) o;
@@ -68,19 +87,30 @@ public class NewsController {
             view.setTitle((String) rowArray[4]);
             view.setAccount((String) rowArray[5]);
             view.setClick((Integer) rowArray[6]);
+            view.setType((String)rowArray[7]);
+            view.setAuthorId((Integer)rowArray[8]);
             views.add(view);
         }
         return views;
     }
 
     @ApiOperation(value = "根据id获取某篇新闻")
-    @ResponseBody
+    //@ResponseBody
     @GetMapping("/front/news/{id}")
-    public NewsAuthor getArticleById(@PathVariable("id") Integer id) {
+    public String getArticleById(@PathVariable("id") Integer id,Model model) {
+        System.out.println("----------------------------");
+        System.out.println("id="+id);
+        System.out.println("----------------------------");
         NewsAuthor newsAuthor = newsService.getNewsAuthorById(id);
-        return newsAuthor;
+        model.addAttribute("datail",newsAuthor);
+        newsService.clickArticleById(id);
+        return "news/detailNews";
     }
 
+    /*
+    *
+    * listNews.html 从这里获取所有新闻数据源
+    * */
     @ResponseBody
     @GetMapping("/news")
     public Map<String, Object> getNews(HttpServletRequest request, @RequestParam(value = "content", required = false) String content) {
@@ -106,6 +136,7 @@ public class NewsController {
                 view.setTitle((String) rowArray[4]);
                 view.setAccount((String) rowArray[5]);
                 view.setClick((Integer) rowArray[6]);
+                view.setType((String)rowArray[7]);
                 views.add(view);
             }
             result.put("count", views.size());
@@ -140,13 +171,20 @@ public class NewsController {
 
     }
 
+
     @PutMapping("/news")
     @ResponseBody
     public String updateNews(News news) {
+        System.out.println("===============================");
+        log.info(news.toString());
+        System.out.println("===============================");
         newsService.updateNews(news);
         return "success";
     }
 
+    /*
+    统计点击量
+    * */
     @GetMapping("/sortNewsClick")
     @ResponseBody
     public List<AdminClick> getAndSortClick() {

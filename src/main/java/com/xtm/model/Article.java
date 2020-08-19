@@ -40,6 +40,8 @@ public class Article {
     @Column(name = "article_click", length = 5)
     private Integer click;
 
+    @Column(name = "classification", length = 30)
+    private String classification;
 
     public Article() {
     }
@@ -53,7 +55,16 @@ public class Article {
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +
                 ", click=" + click +
+                ", classification='" + classification + '\'' +
                 '}';
+    }
+
+    public String getClassification() {
+        return classification;
+    }
+
+    public void setClassification(String classification) {
+        this.classification = classification;
     }
 
     public Integer getId() {

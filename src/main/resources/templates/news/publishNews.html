@@ -19,6 +19,10 @@
             border: 1px solid #ccc;
             height: 1000px;
         }
+
+        .layui-form-select dl {
+            z-index: 10006;
+        }
     </style>
 </head>
 <body class="layui-layout-body">
@@ -35,9 +39,26 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">新闻标题</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" class="layui-input" placeholder=" 请输入标题...">
+                        <input autocomplete="off" type="text" name="title" id="title" class="layui-input" placeholder=" 请输入标题...">
                     </div>
                 </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">文章分类</label>
+                    <div class="layui-input-block layui-form-select">
+                        <select name="type" id="type" lay-filter="aihao" th:required="required">
+                            <option value=""> -- 请选择类别 -- </option>
+                            <option th:each="c:${session.allType}"  th:value="${c.classification}" th:text="${c.classification}" value="1">蔬菜</option>
+                            <!--<option  value=""></option>-->
+                            <!--<option th:selected="${news.type} eq 0" value="0">写作</option>-->
+                            <!--<option th:selected="${news.type} eq 1" value="1">阅读</option>-->
+                            <!--<option th:selected="${news.type} eq 2" value="2">游戏</option>-->
+                            <!--<option th:selected="${news.type} eq 3" value="3">音乐</option>-->
+                            <!--<option th:selected="${news.type} eq 4" value="4">旅行</option>-->
+                        </select>
+                    </div>
+                </div>
+
                 <div class="layui-form-item">
                     <label class="layui-form-label">新闻主体</label>
                     <div class="layui-input-block">
@@ -60,7 +81,7 @@
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn " id="sub" type="submit" lay-filter="formDemo"><i
+                        <button class="layui-btn" id="sub" type="submit" lay-filter="formDemo"><i
                                 class="layui-icon layui-icon-release"></i>立即发表
                         </button>
                         <button type="reset" class="layui-btn layui-btn-primary" onclick="editor.txt.clear();"><i
@@ -84,12 +105,40 @@
     layui.use(['element', 'form'], function () {
         var element = layui.element;
         var form = layui.form;
-        document.getElementById('sub').addEventListener('click', function () {
-            //读取html
-            document.getElementById('content').value = editor.txt.html();
+            document.getElementById('sub').addEventListener('click', function (event) {//注意，此方法没有返回值，只能用preventDefault阻止提交
+            var title = document.getElementById('title').value;
+            var type = document.getElementById('type').value;
+            if (title==""){
+                layer.msg("标题不能为空");
+                event.preventDefault();
+            }else if (type=='') {
+                //读取html
+                layer.msg("请选择一个类别");
+                event.preventDefault();
+            }else if (checkVal(editor.txt.html())){
+                layer.msg("内容不能为空");
+                event.preventDefault();
+            } else {
+                layer.msg("文章发布成功");
+                document.getElementById('content').value = editor.txt.html();
+            }
         }, false)
 
+        function checkVal(str){
+            let num = 0;
+            reg = /<p>(&nbsp;|&nbsp;\s+)+<\/p>|<p>(<br>)+<\/p>/g;
+            while (num < str.length && str != "")
+            {
+                num++;
+                let k = str.match(reg);
+                if (k) {
+                    str = str.replace(k[0], "");
+                }
+            }
+            return str == "";
+        }
     });
+
 
 
 </script>

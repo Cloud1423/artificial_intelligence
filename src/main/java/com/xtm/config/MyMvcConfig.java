@@ -3,6 +3,7 @@ package com.xtm.config;
 import com.xtm.interceptor.LoginHandlerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -24,6 +25,11 @@ public class MyMvcConfig implements WebMvcConfigurer {
     }
 
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/asserts/images/**").addResourceLocations("file:/data/app/temp/static/asserts/images/");
+    }
+
 
     /*
     * 只进行页面的跳转，不涉及任何业务逻辑的处理，只是单纯的路由跳转过程或者是点击一个按钮跳转到另一个页面。
@@ -37,6 +43,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/index").setViewName("index");
+        registry.addViewController("/detail.html").setViewName("detail");
         registry.addViewController("/").setViewName("login");
         registry.addViewController("/article.html").setViewName("article/newArticle");
         registry.addViewController("/listArticle.html").setViewName("article/listArticle");
@@ -45,5 +52,9 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/profile.html").setViewName("admin/profile");
         registry.addViewController("/messages.html").setViewName("message/listMessage");
         registry.addViewController("/dashboard.html").setViewName("dashboard");
+        registry.addViewController("/test.html").setViewName("news/test");
+        registry.addViewController("/addType.html").setViewName("news/addType");
+        registry.addViewController("/detailNews.html").setViewName("news/detailNews");
+        registry.addViewController("/list.html").setViewName("list");
     }
 }

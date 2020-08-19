@@ -33,7 +33,7 @@
         <ul class="layui-nav layui-layout-right ">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="../static/images/admin.jpg" th:src="${session.admin.headUrl}" class="layui-nav-img">
+                    <img id="head_url" src="../static/images/admin.jpg" th:src="${session.admin.headUrl}" class="layui-nav-img">
                     [[${session.admin.adminName}]]
                 </a>
                 <dl class="layui-nav-child">
@@ -83,30 +83,32 @@
                         <dd th:class="${activeUri=='listArticle.html'?'layui-this':''}"><a href="#"
                                                                                            th:href="@{/listArticle.html}"><i
                                 class="layui-icon layui-icon-list"></i>文章列表</a></dd>
-
+                        <dd th:class="${activeUri=='listArticle.html'?'layui-this':''}"><a href="#"
+                                                                                           th:href="@{/articleType.html}"><i
+                                class="layui-icon layui-icon-list"></i>文章分类</a></dd>
                     </dl>
                 </li>
 
                 <li th:class="${activeUri=='news.html'||activeUri=='listNews.html'?'layui-nav-item layui-nav-itemed':'layui-nav-item'}">
-                    <a href="javascript:;"><i class="layui-icon layui-icon-component"></i>新闻管理</a>
-                    <dl class="layui-nav-child">
-                        <dd th:class="${activeUri=='news.html'?'layui-this':''}"><a href="#"
-                                                                                    th:href="@{/news.html}"><i
-                                class="layui-icon layui-icon-release"></i>发布新闻</a></dd>
-                        <dd th:class="${activeUri=='listNews.html'?'layui-this':''}"><a href="#"
-                                                                                        th:href="@{/listNews.html}"><i
-                                class="layui-icon layui-icon-log"></i>历史新闻</a></dd>
+                <a href="javascript:;"><i class="layui-icon layui-icon-component"></i>新闻管理</a>
+                <dl class="layui-nav-child">
+                <dd th:class="${activeUri=='news.html'?'layui-this':''}"><a href="#"
+                th:href="@{/news.html}"><i
+                class="layui-icon layui-icon-release"></i>发布新闻</a></dd>
+                <dd th:class="${activeUri=='listNews.html'?'layui-this':''}"><a href="#"
+                th:href="@{/listNews.html}"><i
+                class="layui-icon layui-icon-log"></i>历史新闻</a></dd>
 
-                    </dl>
+                </dl>
                 </li>
 
 
-                <li class="layui-nav-item"
-                    th:class="${activeUri=='carousel.html'?'layui-nav-item layui-this':'layui-nav-item'}">
-                    <a href="#" th:href="@{/carousel.html}">
-                        <i class="layui-icon layui-icon-carousel"></i>轮播组图
-                    </a>
-                </li>
+                <!--<li class="layui-nav-item"-->
+                    <!--th:class="${activeUri=='carousel.html'?'layui-nav-item layui-this':'layui-nav-item'}">-->
+                    <!--<a href="#" th:href="@{/carousel.html}">-->
+                        <!--<i class="layui-icon layui-icon-carousel"></i>轮播组图-->
+                    <!--</a>-->
+                <!--</li>-->
 
 
                 <li class="layui-nav-item"

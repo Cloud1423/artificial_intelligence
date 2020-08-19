@@ -35,6 +35,9 @@ public class News {
     @Column(name = "news_click", length = 5)
     private Integer click;
 
+    @Column(name = "news_type", length = 30)
+    private String type;
+
     public News() {
     }
 
@@ -47,7 +50,16 @@ public class News {
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +
                 ", click=" + click +
+                ", type='" + type + '\'' +
                 '}';
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Integer getId() {

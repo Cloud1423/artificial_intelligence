@@ -1,5 +1,6 @@
 package com.xtm.service;
 
+import com.github.pagehelper.PageHelper;
 import com.xtm.dao.NewsRepository;
 import com.xtm.model.ArticleAuthor;
 import com.xtm.model.News;
@@ -92,6 +93,8 @@ public class NewsService {
             view.setTitle((String) rowArray[4]);
             view.setAccount((String) rowArray[5]);
             view.setClick((Integer) rowArray[6]);
+            view.setType((String) rowArray[7]);
+            view.setAuthorId((Integer)rowArray[8]);
             views.add(view);
         }
         return views.get(0);

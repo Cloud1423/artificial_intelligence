@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../layui/css/layui.css" th:href="@{/asserts/layui/css/layui.css}">
+    <link rel="stylesheet" href="" th:href="@{/asserts/css/layui-theme-custom.css}">
+    <link rel="stylesheet" href="../css/mystyle.css" th:href="@{/asserts/css/mystyle.css}">
+    <title>添加文章分类</title>
+    <style type="text/css">
+
+        table {
+            margin: auto;
+        }
+
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="padding-right: 50px;padding-top: 20px;">
+<div style="text-align: center;">
+    <div class="layui-inline">
+        <form class="layui-form" id="addType" action="" lay-filter="example">
+
+
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">上级类型</label>-->
+            <!--<div class="layui-input-inline layer-inputs">-->
+            <!--<select name="pid" id="pid" lay-filter="pid">-->
+            <!--<option value="0" selected="selected">顶级分类</option>-->
+            <!--<option value="1">系统文章</option>-->
+            <!--<option value="2">基础文章</option>-->
+            <!--</select>-->
+            <!--<div class="layui-unselect layui-form-select">-->
+            <!--<div class="layui-select-title"><input type="text" placeholder="请选择" value="顶级分类" readonly=""-->
+            <!--class="layui-input layui-unselect" name=""><i-->
+            <!--class="layui-edge"></i></div>-->
+            <!--<dl class="layui-anim layui-anim-upbit" style="">-->
+            <!--<dd lay-value="0" class="layui-this">顶级分类</dd>-->
+            <!--<dd lay-value="1" class="">系统文章</dd>-->
+            <!--<dd lay-value="2" class="">基础文章</dd>-->
+            <!--</dl>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-mid layui-word-aux">请选择上级文章类型</div>-->
+            <!--</div>-->
+            <div class="layui-form-item"  style="margin-top: 20px">
+                <label class="layui-form-label">类型名称</label>
+                <div class="layui-input-inline layer-inputs">
+                    <input type="text" name="name" id="typeName"  placeholder="请输入文章类型名称" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">请输入文章类型名称</div>
+            </div>
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">排序值</label>-->
+            <!--<div class="layui-input-inline layer-inputs">-->
+            <!--<input type="number" min="0" name="sort" id="sort" placeholder="栏目排序值" value="0"-->
+            <!--class="layui-input">-->
+            <!--</div>-->
+            <!--<div class="layui-form-mid layui-word-aux">从小到大排序,越小越在前</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">状态</label>-->
+            <!--<div class="layui-input-inline layer-inputs">-->
+            <!--<input type="radio" name="status" value="0" title="显示" checked="checked">-->
+            <!--<div class="layui-unselect layui-form-radio layui-form-radioed"><i-->
+            <!--class="layui-anim layui-icon layui-anim-scaleSpring"></i>-->
+            <!--<div>显示</div>-->
+            <!--</div>-->
+            <!--<input type="radio" name="status" value="1" title="隐藏">-->
+            <!--<div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>-->
+            <!--<div>隐藏</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="layui-form-item" style="margin-top: 25px">
+                <input type="hidden" name="id" id="id" value="">
+                <input type="hidden" name="request_url" id="request_url" value="">
+                <button type="submit" style="width: 400px" class="layui-btn" id="save" lay-submit="execute" lay-filter="execute" onclick="press()"><i
+                        class="layui-icon layui-icon-form"></i>保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/asserts/js/jquery-3.3.1.js}"></script>
+<script src="../layui/layui.js" th:src="@{/asserts/layui/layui.js}"></script>
+<script th:src="@{/asserts/js/myjs.js}"></script>
+
+
+<script>
+    //JavaScript代码区域
+    layui.use(['layer', 'jquery'], function () {
+        layui.use('layer', function () {
+            var layer = layui.layer;
+
+
+            $('#save').click(function () {
+                //eg1
+                var type = document.getElementById("typeName").value;//获取input的值
+                //alert(type);
+                layer.confirm('确定要添加此分类吗?', {icon: 3, title:'提示'}, function(index){
+                    //do something
+                    layer.close(index);
+                    $.ajax({
+                        url:"/ai/types/add",
+                        data:"name=" + type,
+                        type:"PUT",
+                        success:function (data) {
+                            window.parent.location.reload();
+                            parent.layer.close(index);
+                            parent.layer.msg("添加分类成功!!!!");
+                        },
+                        error:function (data) {
+                            parent.layer.msg("添加分类失败");
+                        }
+                    })
+                });
+                return false;
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>
