@@ -2,6 +2,7 @@ package com.xtm.service;
 
 import com.xtm.dao.NewsRepository;
 import com.xtm.model.ArticleAuthor;
+import org.springframework.data.domain.Pageable;
 import com.xtm.model.News;
 import com.xtm.model.NewsAuthor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,19 @@ import java.util.List;
 public class NewsService {
     @Autowired
     private NewsRepository newsRepository;
+
+    //分页查询所有
+    public Page<News> findAll2(Pageable page){
+        Page<News> newss2 = newsRepository.findAllNewss2(page);
+        return newss2;
+    }
+
+
+    //分页查询所有
+    public Page<News> findAll(Pageable page){
+        return newsRepository.findAll(page);
+    }
+
 
     public void saveNews(News news) {
         newsRepository.save(news);

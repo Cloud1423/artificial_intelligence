@@ -1,5 +1,7 @@
 package com.xtm.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xtm.model.*;
 import com.xtm.service.NewsService;
 import io.swagger.annotations.Api;
@@ -7,6 +9,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,33 +57,54 @@ public class NewsController {
         return "news/modifyNews";
     }
 
+
     @ApiOperation(value = "获取所有新闻")
-    @ResponseBody
+    //@ResponseBody
     @GetMapping("/front/news")
-    public List<NewsAuthor> getArticles() {
-        List<Object> articles = newsService.getAllNewss();
-        List<NewsAuthor> views = new ArrayList<NewsAuthor>();
-        for (Object o : articles) {
-            Object[] rowArray = (Object[]) o;
-            NewsAuthor view = new NewsAuthor();
-            view.setId((Integer) rowArray[0]);
-            view.setAuthor((String) rowArray[1]);
-            view.setContent((String) rowArray[2]);
-            view.setCreateTime((Date) rowArray[3]);
-            view.setTitle((String) rowArray[4]);
-            view.setAccount((String) rowArray[5]);
-            view.setClick((Integer) rowArray[6]);
-            views.add(view);
-        }
-        return views;
+    public String getArticles(Model model,@RequestParam(value = "pageIndex", required = false, defaultValue = "1")Integer pageIndex) {
+        //指定排序参数对象：根据id，进行降序查询
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Pageable page = PageRequest.of(pageIndex - 1, 5 ,sort);
+        //分页查询
+        Page<News> newsDatas = newsService.findAll2(page);
+
+
+        List<News> news = newsDatas.getContent();
+        System.out.println("查询当前页面的集合："+ news);
+        model.addAttribute("content",news);
+        model.addAttribute("totalPages",newsDatas.getTotalPages());
+        model.addAttribute("currentPage",pageIndex);
+        return "index";
+//        List<Object> articles = newsService.getAllNewss();
+//        List<NewsAuthor> views = new ArrayList<NewsAuthor>();
+//        for (Object o : articles) {
+//            Object[] rowArray = (Object[]) o;
+//            NewsAuthor view = new NewsAuthor();
+//            view.setId((Integer) rowArray[0]);
+//            view.setAuthor((String) rowArray[1]);
+//            view.setContent((String) rowArray[2]);
+//            view.setCreateTime((Date) rowArray[3]);
+//            view.setTitle((String) rowArray[4]);
+//            view.setAccount((String) rowArray[5]);
+//            view.setClick((Integer) rowArray[6]);
+//
+//            views.add(view);
+//        }
+//        return views;
     }
 
+
     @ApiOperation(value = "根据id获取某篇新闻")
-    @ResponseBody
+    //@ResponseBody
     @GetMapping("/front/news/{id}")
-    public NewsAuthor getArticleById(@PathVariable("id") Integer id) {
+    public String getArticleById(@PathVariable("id") Integer id,Model model) {
+        System.out.println("----------------------------");
+        System.out.println("id="+id);
+        System.out.println("----------------------------");
         NewsAuthor newsAuthor = newsService.getNewsAuthorById(id);
-        return newsAuthor;
+        model.addAttribute("datail",newsAuthor);
+        newsService.clickArticleById(id);
+        return "news/detailNews";
     }
 
     @ResponseBody

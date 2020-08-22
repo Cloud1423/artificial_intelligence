@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="htmlhead">
+    <meta charset="utf-8"></meta>
+</head>
+<body>
+<table border="1">
+    <tr th:each="emp:${content}">
+        <td th:text="${emp[0]}"></td>
+        <td th:text="${emp[1]}"></td>
+        <td th:text="${emp[2]}"></td>
+    </tr>
+    <div align="center">
+        <a  th:href="@{/pager2(pageIndex=1)}">首页</a>
+        <!--<a th:if="${currentPage} != 1" th:href="@{/pager2(pageIndex=${currentPage}-1)}"  >上一页</a>-->
+        <a th:href="@{/pager2(pageIndex=(${currentPage}==1?1:${currentPage}-1))}"  >上一页</a>
+        <a th:href="@{/pager2(pageIndex=(${currentPage}==${totalPages}?${totalPages}:${currentPage}+1))}" >下一页</a>
+        <a th:href="@{/pager2(pageIndex=${totalPages})}" >尾页</a>
+    </div>
+</table>
+</body>
+</html>

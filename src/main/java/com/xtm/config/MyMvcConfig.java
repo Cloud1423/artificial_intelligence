@@ -36,7 +36,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
     * */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/index").setViewName("index");
+        registry.addViewController("/index").setViewName("index.html");
+        registry.addViewController("/detail.html").setViewName("detail");
         registry.addViewController("/").setViewName("login");
         registry.addViewController("/article.html").setViewName("article/newArticle");
         registry.addViewController("/listArticle.html").setViewName("article/listArticle");
@@ -45,5 +46,9 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/profile.html").setViewName("admin/profile");
         registry.addViewController("/messages.html").setViewName("message/listMessage");
         registry.addViewController("/dashboard.html").setViewName("dashboard");
+        registry.addViewController("/test.html").setViewName("news/test");
+        registry.addViewController("/addType.html").setViewName("news/addType");
+        registry.addViewController("/detailNews.html").setViewName("news/detailNews");
+        registry.addViewController("/list.html").setViewName("list");
     }
 }

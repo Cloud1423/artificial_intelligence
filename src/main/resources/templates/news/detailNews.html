@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../static/layui/css/layui.css " th:href="@{/asserts/layui/css/layui.css}">
+    <link rel="stylesheet" href="../static/asserts/css/mian.css" th:href="@{/asserts/css/mian.css}">
+    <title>个人博客</title>
+
+    <style>
+        .textarea {
+            outline: none;
+            resize: none
+        }
+    </style>
+</head>
+<body class="lay-blog">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 顶部导航栏 -->
+        <div class="layui-header" th:fragment="topbar">
+            <div class="layui-logo">
+                <div onclick="location='/ai/dashboard.html'"><i class="layui-icon layui-icon-app"
+                                                                style="font-size: 20px;padding-right:10px;"></i>个人博客管理系统
+                </div>
+            </div>
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="javascript:;" title="侧边伸缩" onclick="animation()"><i
+                        class="layui-icon layui-icon-shrink-right" id="animation"></i></a></li>
+                <li class="layui-nav-item"><a href="#" th:href="@{/index}" title="前台"><i
+                        class="layui-icon layui-icon-home"></i></a></li>
+                <li class="layui-nav-item"><a href="#" th:href="@{/swagger-ui.html#}" title="swagger2接口文档"><i
+                        class="layui-icon layui-icon-link"></i></a></li>
+                <!--<li class="layui-nav-item"><input type="text" class="search-input" placeholder="  搜索..."></li>
+                <button class="layui-btn layui-icon layui-icon-search" style="margin-left:10px;"></button>-->
+            </ul>
+
+            <ul class="layui-nav layui-layout-right ">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+
+                        <img src="../static/images/admin.jpg"
+                             th:src="'http://112.124.18.177:8080/ai/'+${session.admin.headUrl}" class="layui-nav-img">
+                        <!--<img id="head_url" src="../static/images/admin.jpg" th:src="${session.admin.headUrl}" class="layui-nav-img">-->
+                        [[${session.admin.adminName}]]
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="" th:href="@{/profile.html}">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item"><a href="" th:href="@{/admin/exit}"> 退出系统</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container-wrap">
+        <div class="container container-message container-details">
+            <div class="contar-wrap">
+                <div class="item">
+                    <div class="item-box  layer-photos-demo1 layer-photos-demo">
+                        <h3><a href="#" th:text="${datail.title}">拥有诗意的心态,才能拥有诗意的生活</a></h3>
+                        <input type="hidden" id="articleId" th:value="${datail.id}">
+                        <input type="hidden" id="authorId" th:value="${session.admin.id}">
+                        <input type="hidden" id="headUrl" th:value="${session.admin.headUrl}">
+                        <input type="hidden" id="reviewerName" th:value="${session.admin.adminName}">
+                        <!--<div class="count layui-clear">-->
+                            <!--<h5 class="pull-left">文章类别：<span th:text="${datail.type}">文学</span></h5>-->
+                        <!--</div>-->
+                        <div class="count layui-clear">
+                            <h5 class="pull-left">发布于：<span th:text="${datail.createTime}">刚刚</span></h5>
+                            <h5 class="pull-right">作者：<span th:text="${datail.author}">刚刚</span></h5>
+                        </div>
+
+                        <div th:utext="${datail.content}"></div>
+                        <!--<img src="../res/static/images/item.png" alt="">-->
+                        <div class="count layui-clear">
+                            <span class="pull-left">阅读 <em th:text="${datail.click}">100000+</em></span>
+                            <span class="pull-right"><i class="layui-icon layui-icon-praise"></i><em>999</em></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="comt layui-clear">
+                    <a href="javascript:;" class="pull-left">评论</a>
+                    <button id="comment" type="button" class="layui-btn layui-btn-normal pull-right">写评论</button>
+                </div>
+                <div class="item-btn" id="pageDiv">
+                </div>
+                <div id="LAY-msg-box">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>
+            <span>&copy; 2020</span>
+            <span><a>layui.com</a></span>
+            <span>MIT license</span>
+        </p>
+        <p><span>人生就是一场修行</span></p>
+    </div>
+
+</div>
+<script src="../static/layui/layui.js" th:src="@{/asserts/layui/layui.js}"></script>
+
+</body>
+<script>
+
+
+    //JavaScript代码区域
+    layui.use(['form','element', 'jquery'], function () {
+        var element = layui.element;
+        var form = layui.form, $ = layui.$;
+        layer = layui.layer;
+
+
+
+
+        $(document).on('click', '#del', function () {
+            var id = $(this).attr('value');
+            layer.confirm("是否确定删除这个评论？", function (index) {
+                layer.close(index);
+                $.ajax({
+                    url: "/ai/comment/delete/" + id,
+                    type: "DELETE",
+                    dataType: "json",
+                    success: function (data) {
+                        layer.msg("删除成功!");
+                        setTimeout("location.reload()", 500);
+                        location.reload();
+                    },
+                    error: function (data) {
+                        layer.msg("删除成功!");
+                        setTimeout("location.reload()", 500);
+                        location.reload();
+                    }
+                });
+            });
+        });
+
+
+
+
+        $(document).on('click', '#comment', function () {
+            var articleId = document.getElementById("articleId").value;
+            var authorId = document.getElementById("authorId").value;
+            var headUrl = document.getElementById("headUrl").value;
+            var reviewerName = document.getElementById("reviewerName").value;
+            layer.open({
+                id: 1,
+                type: 1,
+                title: '说点什么吧',
+                style: 'width:80%;height:40%;',
+                content: "<div style='display:flex;justify-content:center;'><textarea id='area' style='width:100%;height:135px;'></textarea></div>",
+                btn: ['保存', '取消'],
+
+                yes: function (index, layero) {
+                    //获取输入框里面的值
+                    var closeContent = $("#area").val();
+
+                    //layer.msg(authorId);
+                    layer.close(index);
+
+                    //当async属性的值为false时是同步的，Ajax请求将整个浏览器锁死，只有ajax请求返回结果后，才执行ajax后面的alert语句
+                    // 在这里提交数据
+                    $.ajax({
+                        type : "GET",
+                        url : "/ai/comment",
+                        async : true,
+                        cache : false,
+                        //cache属性是flase（默认值）时：每次读取的是最新的数据。
+                        data:{
+                            'content':closeContent,
+                            'articleId':articleId,
+                            'authorId':authorId,
+                            'headUrl':headUrl,
+                            'reviewerName':reviewerName
+                        },
+                        success: function (data) {
+                            parent.layer.msg("添加评论成功");
+                            parent.location.reload(); // 父页面刷新
+                        },
+                        error:function () {
+                            parent.layer.msg("添加评论失败");
+                        }
+                    });
+                },
+                no: function (index, layero) {
+                    layer.close(index);
+                }
+            });
+        })
+
+
+
+        $(document).ready(function () {
+
+
+
+
+            //alert( window.location.href);
+            var temp = window.location.href.slice(window.location.href.indexOf("front/news/")+"front/news/".length);
+            //layer.msg(temp);
+            // temp = temp.substring(0,temp.indexOf("#"));
+
+            $.ajax({
+                url: '/ai/comment/' + temp,
+                type: 'GET',
+                async : true,
+                cache : true,
+                dataType: 'json',
+                success: function (data) {
+
+
+
+                    var item = data.data;
+                    var norice_content = "";
+                    for (var i = 0; i < item.length; i++) {
+                        var src = "http://112.124.18.177:8080/ai/" + item[i].headUrl;
+                        norice_content += "<div class=\"info-item\">";
+                        norice_content += "      <img  style=\"width: 100px;height: 100px\" class=\"info-img\" src=" + src + ">";
+                        norice_content += "         <div class=\"info-text\">";
+                        norice_content += "<p class=\"title count\">";
+                        norice_content += "<span class=\"name\">" + item[i].reviewerName + "</span>";
+                        // norice_content += "<span class=\"info-img like\"><a id='del' href=\"javascript:void(0);\" >删除</a>"  + "</span>";
+                        norice_content += "<span class=\"info-img like\"><button id='del' value='"+item[i].commonId+"' type=\"button\" class=\"layui-btn layui-btn-xs layui-btn-radius layui-btn-primary\" th:onclick='f()'>删除</button></span>";
+                        norice_content += "</p>";
+                        norice_content += "<p class=\"info-intr\">" + item[i].commonContent + "</p>";
+                        norice_content += "</div>";
+                        norice_content += "</div>";
+                    }
+                    $('#LAY-msg-box').html(norice_content);
+                    console.log(data);
+                },
+                error: function (data) {
+                    console.log(data);
+
+                    layer.msg("获取评论信息失败");
+                }
+            })
+        })
+
+
+    });
+
+
+</script>
+</html>

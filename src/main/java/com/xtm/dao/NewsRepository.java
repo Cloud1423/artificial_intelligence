@@ -18,7 +18,9 @@ import java.util.List;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Integer> {
 
-    List<News> findAll();
+    //List<News> findAll();
+
+
 
     @Modifying
     @Query(value = "insert into news(author_id,content,create_time,title) values(:#{#news.authorId},:#{#news.content},:#{#news.createTime},:#{#news.title})", nativeQuery = true)
@@ -26,6 +28,10 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
 
     @Query(value = " select ne.id,ad.adminName,ne.content,ne.createTime,ne.title,ad.account,ne.click from News ne,Admin ad  where  ne.authorId=?1 and ad.id=ne.authorId")
     List<Object> findAllNewssByAuthorId(Integer authorId);
+
+    @Query(value = " select ne.id,ad.adminName,ne.content,ne.createTime,ne.title,ad.account,ne.click from News ne,Admin ad  where ad.id=ne.authorId")
+    Page<News> findAllNewss2(Pageable pageable);
+
 
     @Query(value = " select ne.id,ad.adminName,ne.content,ne.createTime,ne.title,ad.account,ne.click from News ne,Admin ad  where ad.id=ne.authorId")
     List<Object> findAllNewss();
